@@ -29,7 +29,7 @@
 //! ### Token Creation
 //!
 //! Token creation start by calling the `mint(&mut self, id: u32)` function.
-//! The token owner becomes the function caller. The Token ID needs to be specified
+//! The contract owner becomes the function caller. The Token ID needs to be specified
 //! as the argument on this function call.
 //!
 //! ### Token Transfer
