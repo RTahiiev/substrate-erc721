@@ -87,8 +87,6 @@ mod erc721 {
     #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
     pub enum Access {
         Mint,
-        Backend,
-        PublicAPI
     }
 
     #[derive(Encode, Decode, Debug, PartialEq, Eq, Copy, Clone)]
@@ -101,6 +99,7 @@ mod erc721 {
         CannotInsert,
         CannotFetchValue,
         NotAllowed,
+        OnwerNotExists
     }
 
     /// Event emitted when a token transfer occurs.
@@ -142,7 +141,10 @@ mod erc721 {
         pub fn new() -> Self {
             // This call is required in order to correctly initialize the
             // `Mapping`s of our contract.
-            ink_lang::utils::initialize_contract(|_| {})
+            ink_lang::utils::initialize_contract(|contract: &mut Self| {
+                let caller = Self::env().caller();
+                contract.owners.insert(&caller, &Access::Mint);
+            })
         }
 
         /// Returns the balance of the owner.
@@ -159,11 +161,13 @@ mod erc721 {
             self.token_owner.get(&id)
         }
 
-        /// Enable access to owner mint tokens.
+        /// Enable access to mint tokens.
         #[ink(message)]
         pub fn set_access(&mut self, account: AccountId) {
-            // TODO: only smart contract owner must give a access to mint NFT
-            self.owners.insert(account, &Access::Mint);
+            let caller = Self::env().caller();
+            if self.owners.contains(caller) {
+                self.owners.insert(account, &Access::Mint);
+            }
         }
 
         /// Returns the approved account ID for this token if any.
@@ -226,7 +230,7 @@ mod erc721 {
             let caller = self.env().caller();
             if self.owners.contains(caller) {
                 match self.access_lvl(caller) {
-                    Access::Mint => {
+                    Some(Access::Mint) => {
                         self.add_token_to(&caller, id)?;
                         self.env().emit_event(Transfer {
                             from: Some(AccountId::from([0x0; 32])),
@@ -434,8 +438,8 @@ mod erc721 {
         }
 
         /// Return contract owner Access level
-        fn access_lvl(&self, key: AccountId) -> Access {
-            self.owners.get(key).unwrap() // Using of unwrap its bad practise. TODO: change it.
+        fn access_lvl(&self, key: AccountId) -> Option<Access> {
+            self.owners.get(key)
         }
     }
 
