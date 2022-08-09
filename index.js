@@ -4,6 +4,7 @@ import { ContractPromise } from '@polkadot/api-contract';
 import metadata from '../erc721/target/ink/metadata.json' assert {type: "json"};
 import * as dotenv from 'dotenv'
 
+
 async function main () {
     dotenv.config();
     /* INTERACTION WITH CHAIN VIA CODE
