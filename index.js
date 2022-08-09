@@ -1,9 +1,11 @@
 // Import
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ContractPromise } from '@polkadot/api-contract';
-import metadata from '/home/rt/myProjects/substrate_test/erc721/target/ink/metadata.json' assert {type: "json"};
+import metadata from '../erc721/target/ink/metadata.json' assert {type: "json"};
+import * as dotenv from 'dotenv'
 
 async function main () {
+    dotenv.config();
     /* INTERACTION WITH CHAIN VIA CODE
      */
     // Construct
@@ -15,8 +17,8 @@ async function main () {
     console.log(api.genesisHash.toHex());
 
     // The actual address that we will use
-    const OWNER_ADDR = '5CFNDvgHe92WHDnFJXKu27zvLqxjv3rKojjxFZZJtFCjHrmy';
-    const CONTRACT_ADDR = '5FTAkyVGWTw2HazaRfGXc71BzkcXrcJBksJMFozTwWm8fRRA';
+    const OWNER_ADDR = process.env.OWNER_ADDR;
+    const CONTRACT_ADDR = process.env.CONTRACT_ADDR;
 
     // Retrieve the last timestamp
     const now = await api.query.timestamp.now();
@@ -31,7 +33,7 @@ async function main () {
     const contract = new ContractPromise(api, metadata, CONTRACT_ADDR);
 
     // test user address
-    const TEST_ADDR = '5FpNLc1gyw71dSWjYTCdnxwZUMWjFESbcr5yB5cJMJfBj2Cv';
+    const TEST_ADDR = process.env.TEST_ADDR;
 
     // (We perform the send from an account, here using owner address)
     const { gasRequired, storageDeposit, result, output } = await contract.query.balanceOf(

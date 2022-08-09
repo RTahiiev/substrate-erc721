@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "call hash 0x3db49dea9bd47d0463491bdc07dd0653c6f91e03ea616942fcfc325aaf13bcb4 0x45807edaffecbff2cc7adb1b6cbeff3417673784916ea16d657eea857bd203c3",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "build": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/RTahiiev/substrate-erc721#readme",
   "dependencies": {
     "@polkadot/api": "^9.1.1",
-    "@polkadot/api-contract": "^9.1.1"
+    "@polkadot/api-contract": "^9.1.1",
+    "dotenv": "^16.0.1"
   }
 }

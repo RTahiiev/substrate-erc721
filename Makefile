@@ -6,3 +6,7 @@ deploy:
 .PHONY: test
 test:
 	cargo +nightly test
+
+.PHONY: run-js
+run-js:
+	yarn build
