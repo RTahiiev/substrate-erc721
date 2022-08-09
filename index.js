@@ -1,7 +1,7 @@
 // Import
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ContractPromise } from '@polkadot/api-contract';
-import metadata from '/home/rt/myProjects/substrate_test/erc721/target/ink/metadata.json' assert {type: "json"};
+import metadata from 'path/to/metadata' assert {type: "json"};
 
 async function main () {
     /* INTERACTION WITH CHAIN VIA CODE
